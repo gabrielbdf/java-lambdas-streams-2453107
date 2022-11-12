@@ -22,6 +22,8 @@ public class Main {
     shoppingList.add("pasta");
     Stream<String> shoppingListStream = shoppingList.stream();
     shoppingListStream.sorted()
+            .filter(item -> item.toLowerCase().startsWith("p"))
+            .map(item -> item.substring(0,1).toUpperCase().concat(item.substring(1)))           
             .forEach(item -> System.out.println(item));
 
   }
