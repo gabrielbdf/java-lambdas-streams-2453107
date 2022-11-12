@@ -1,9 +1,16 @@
 package com.example;
 
+import java.security.cert.CollectionCertStoreParameters;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
+
+import javax.sound.midi.Track;
+import javax.swing.plaf.basic.BasicTreeUI.TreeModelHandler;
 
 public class Main {
 
@@ -20,11 +27,23 @@ public class Main {
     shoppingList.add("pineapple");
     shoppingList.add("milk");
     shoppingList.add("pasta");
-    Stream<String> shoppingListStream = shoppingList.stream();
-    shoppingListStream.sorted()
-            .filter(item -> item.toLowerCase().startsWith("p"))
+    
+    Map<String, List<String>> transformedMap = shoppingList
+            .stream()
+            .sorted()
             .map(item -> item.substring(0,1).toUpperCase().concat(item.substring(1)))           
-            .forEach(item -> System.out.println(item));
+            .collect(Collectors.groupingBy(item -> item.substring(0,1)))
+            .entrySet()
+            .stream()
+            .sorted((a,b) -> a.getKey().charAt(0) > b.getKey().charAt(0) ? 1 : -1)
+            .collect(Collectors.toMap(
+                 (item) -> item.getKey(),
+                 (item) -> item.getValue(),
+                 (v1, v2) -> {throw new RuntimeException();},
+                 TreeMap::new
+            ));
 
+
+            System.out.println(transformedMap);
   }
 }
