@@ -1,6 +1,5 @@
 package com.example;
 
-import java.security.cert.CollectionCertStoreParameters;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -9,8 +8,8 @@ import java.util.TreeMap;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import javax.sound.midi.Track;
-import javax.swing.plaf.basic.BasicTreeUI.TreeModelHandler;
+import javax.swing.JOptionPane;
+
 
 public class Main {
 
@@ -30,12 +29,10 @@ public class Main {
     
     Map<String, List<String>> transformedMap = shoppingList
             .stream()
-            .sorted()
             .map(item -> item.substring(0,1).toUpperCase().concat(item.substring(1)))           
             .collect(Collectors.groupingBy(item -> item.substring(0,1)))
             .entrySet()
             .stream()
-            .sorted((a,b) -> a.getKey().charAt(0) > b.getKey().charAt(0) ? 1 : -1)
             .collect(Collectors.toMap(
                  (item) -> item.getKey(),
                  (item) -> item.getValue(),
@@ -43,7 +40,6 @@ public class Main {
                  TreeMap::new
             ));
 
-
-            System.out.println(transformedMap);
+    System.out.println(transformedMap);
   }
 }
